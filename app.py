@@ -90,8 +90,9 @@ try:
         col1.metric("Current Price", f"₹{last_price:,.2f}")
         
         change_pct = ((prediction - last_price) / last_price) * 100
-        col2.metric("Predicted Next Day Price", f"₹{prediction:,.2f}", delta=f"{change_pct:.2f}%")
+        col2.metric("Predicted Target Price", f"₹{prediction:,.2f}", delta=f"{change_pct:.2f}%")
         st.warning("⚠️ **Note:** This BETA model is for demonstration only. Stock markets are unpredictable")
 
 except Exception as e:
+
     st.error(f"Prediction Error: {e}")
