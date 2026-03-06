@@ -61,7 +61,7 @@ try:
         st.plotly_chart(fig, width="stretch")
 
         # --- 4. Machine Learning Section ---
-        st.subheader("AI Next-Day Prediction")
+        st.subheader("Predicted Target Price")
 
         # Simple Feature Engineering
         df['Day_of_Week'] = df['Date'].dt.dayofweek
@@ -96,4 +96,5 @@ try:
 except Exception as e:
 
     st.error(f"Prediction Error: {e}")
+
 
