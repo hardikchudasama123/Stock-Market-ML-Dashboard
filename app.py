@@ -13,7 +13,7 @@ st.title("📈 DalaalStreet.ai")
 
 # --- 2. Sidebar Settings ---
 st.sidebar.header("NSE/BSE Input")
-ticker_input = st.sidebar.text_input("Enter Ticker (e.g. RELIANCE, TCS)", value="RELIANCE")
+ticker_input = st.sidebar.text_input("Enter Ticker (e.g. RELIANCE, TCS)", value="TCS")
 exchange = st.sidebar.selectbox("Exchange", ["NSE", "BSE"])
 ticker_symbol = f"{ticker_input}.NS" if exchange == "NSE" else f"{ticker_input}.BO"
 
@@ -96,3 +96,4 @@ try:
 except Exception as e:
 
     st.error(f"Prediction Error: {e}")
+
