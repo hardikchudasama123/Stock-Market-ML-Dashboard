@@ -30,7 +30,7 @@ st.sidebar.divider()
 st.sidebar.markdown(
 """
 <div style="text-align:center; font-size:11px; color:gray;">
-Developed by Hardik | © 2026 All Rights Recived.
+Developed by Hardik Chudasama | © 2026
 </div>
 """,
 unsafe_allow_html=True
@@ -62,10 +62,10 @@ try:
 
     df = df.copy()
 
-    # Ensure numeric values
+    # Ensure numeric
     df['Close'] = pd.to_numeric(df['Close'])
 
-    # Create display date column (DD/MM/YYYY)
+    # Display date format
     df['Display_Date'] = pd.to_datetime(df['Date']).dt.strftime('%d/%m/%Y')
 
     # --- Indicators ---
@@ -97,6 +97,9 @@ try:
     )
 
     buy_signals = df[df['Buy_Signal'] == 1]
+
+    # --- Sort signals (latest first) ---
+    buy_signals = buy_signals.sort_values(by="Date", ascending=False)
 
     # --- Chart ---
     st.subheader(f"{ticker_symbol} Strategy Chart")
@@ -147,13 +150,12 @@ try:
 
     st.plotly_chart(fig, width="stretch")
 
-    # --- Buy Signal Table ---
+    # --- Signals Table ---
     st.subheader("Recent Buy Signals")
 
     st.dataframe(
         buy_signals[['Display_Date', 'Close', 'RSI']]
         .rename(columns={"Display_Date": "Date"})
-        .tail(10)
     )
 
     st.warning(
