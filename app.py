@@ -7,7 +7,7 @@ from datetime import datetime, timedelta
 
 # --- Page Configuration ---
 st.set_page_config(page_title="DalaalStreet.ai", layout="wide")
-st.title("📈 DalaalStreet.ai - Strategy Dashboard")
+st.title("📈 DalaalStreet.ai")
 
 # --- Sidebar ---
 st.sidebar.header("Stock Input")
@@ -20,14 +20,17 @@ ticker_symbol = f"{ticker_input}.NS" if exchange == "NSE" else f"{ticker_input}.
 start_date = st.sidebar.date_input(
     "Start Date", value=datetime.now() - timedelta(days=365)
 )
-end_date = st.sidebar.date_input("End Date", value=datetime.now())
 
-# Sidebar footer
+end_date = st.sidebar.date_input(
+    "End Date", value=datetime.now()
+)
+
+# Sidebar Footer
 st.sidebar.divider()
 st.sidebar.markdown(
 """
 <div style="text-align:center; font-size:11px; color:gray;">
-Developed by Hardik | © 2026
+Developed by Hardik | © 2026 All Rights Recived.
 </div>
 """,
 unsafe_allow_html=True
@@ -62,13 +65,16 @@ try:
     # Ensure numeric values
     df['Close'] = pd.to_numeric(df['Close'])
 
-    # --- Indicator Calculations ---
+    # Create display date column (DD/MM/YYYY)
+    df['Display_Date'] = pd.to_datetime(df['Date']).dt.strftime('%d/%m/%Y')
+
+    # --- Indicators ---
 
     # EMA
     df['EMA20'] = df['Close'].ewm(span=20).mean()
     df['EMA50'] = df['Close'].ewm(span=50).mean()
 
-    # --- RSI Calculation ---
+    # RSI
     delta = df['Close'].diff()
 
     gain = (delta.where(delta > 0, 0)).rolling(window=14).mean()
@@ -78,7 +84,7 @@ try:
 
     df['RSI'] = 100 - (100 / (1 + rs))
 
-    # --- Strategy Logic (Momentum Pullback Strategy) ---
+    # --- Strategy Logic ---
 
     df['Buy_Signal'] = np.where(
         (df['Close'] > df['EMA50']) &
@@ -121,7 +127,6 @@ try:
         )
     )
 
-    # Buy signals
     fig.add_trace(
         go.Scatter(
             x=buy_signals['Date'],
@@ -142,11 +147,13 @@ try:
 
     st.plotly_chart(fig, width="stretch")
 
-    # --- Show Recent Signals ---
+    # --- Buy Signal Table ---
     st.subheader("Recent Buy Signals")
 
     st.dataframe(
-        buy_signals[['Date', 'Close', 'RSI']].tail(10)
+        buy_signals[['Display_Date', 'Close', 'RSI']]
+        .rename(columns={"Display_Date": "Date"})
+        .tail(10)
     )
 
     st.warning(
