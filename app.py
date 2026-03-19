@@ -13,7 +13,7 @@ st.title("📈 DalaalStreet.ai")
 st.sidebar.header("Stock Input")
 
 ticker_input = st.sidebar.text_input("Enter Ticker (e.g. RELIANCE, TCS)", value="TCS")
-exchange = st.sidebar.selectbox("Exchange", ["NSE", "BSE"])
+exchange = st.sidebar.selectbox("Exchange", ["BSE", "NSE"])
 
 ticker_symbol = f"{ticker_input}.NS" if exchange == "NSE" else f"{ticker_input}.BO"
 
